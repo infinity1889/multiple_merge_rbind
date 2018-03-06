@@ -1,0 +1,19 @@
+
+# step 1. Put all input files into a new folder. Everything in this folder will be taken into the merge or rbind.
+# step 2. Modify read.table() or merge() to serve your need.
+# step 3. Run the code.
+
+####################### multiple merge #################################
+multmerge <-  function(mypath){
+    filenames=list.files(path=mypath, full.names=TRUE)
+    datalist = lapply(filenames, function(x){read.table(file=x,sep='|',header=T)})
+    Reduce(function(x,y) {merge(x,y,all=TRUE)}, datalist)}
+cool_merge <- multmerge('your_folder')
+
+
+####################### multiple rbind #################################
+multrbind <-  function(mypath){
+    filenames=list.files(path=mypath, full.names=TRUE)
+    datalist = lapply(filenames, function(x){read.table(file=x,sep='|',header=F)})
+    Reduce(function(x,y) {rbind(x,y)}, datalist)}
+cool_rbind <- multrbind('your_folder')
